@@ -8,6 +8,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
+		a {
+			color: #b22222;
+			text-decoration: none;
+			}
+		a:visited {
+			color: #b22222;
+		}
+		a:hover {
+			text-decoration: underline;
+		}
+
         body {
             font-family: 'Poppins', sans-serif;
             margin: 0;
@@ -29,32 +40,20 @@
             color: #b22222;
             margin-bottom: 20px;
         }
-        .filters {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
+        .filters-table {
+            width: 100%;
+            border-collapse: collapse;
             margin-bottom: 20px;
         }
-        select, button {
+        .filters-table th, .filters-table td {
             padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            background: #fff;
+            border: 1px solid #ddd;
+            text-align: left;
+            vertical-align: top;
         }
-        select {
-            width: 200px;
-        }
-        button {
+        .filters-table th {
             background-color: #b22222;
             color: white;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-        }
-        button:hover {
-            background-color: #8b0000;
         }
         .wine-list {
             margin-top: 20px;
@@ -64,81 +63,116 @@
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             text-align: left;
         }
-        .wine-item {
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #b22222;
+            color: white;
+        }
+        .no-results {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #b22222;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Wine Selector</h1>
-        <div class="filters">
-            <select multiple id="category"></select>
-            <select multiple id="country"></select>
-            <select multiple id="grape"></select>
-            <select multiple id="price"></select>
-            <select multiple id="sugar"></select>
-            <select multiple id="taste"></select>
-            <select multiple id="style"></select>
-            <select multiple id="pairing"></select>
-        </div>
-        <button onclick="filterWines()">Apply Filters</button>
+        <h1>Svalbar Wine Cheat Sheet</h1>
+        <table class="filters-table" id="filters"></table>
         <div class="wine-list" id="wineList"></div>
     </div>
+    
     <script>
         let wineData = [];
+        let filters = { Category: new Set(), Country: new Set(), Pairing: new Set(), Taste: new Set() };
+        
         function loadWineData() {
-            $.get("winedata.csv", function(data) {
+            $.get("https://salimfang.github.io/svalbar/winedata.csv", function(data) {
                 wineData = Papa.parse(data, { header: true }).data;
                 populateFilters();
+                displayWines(wineData);
             });
         }
+        
         function populateFilters() {
-            const filters = ["category", "country", "grape", "price", "sugar", "taste", "style", "pairing"];
-            const options = {
-                category: new Set(), country: new Set(), grape: new Set(), price: new Set(),
-                sugar: new Set(), taste: new Set(), style: new Set(), pairing: new Set()
-            };
-            wineData.forEach(wine => {
-                if (wine.Category) options.category.add(wine.Category);
-                if (wine.Country) options.country.add(wine.Country);
-                if (wine.Grape) wine.Grape.split('|').forEach(g => options.grape.add(g.trim()));
-                if (wine["Price by Bottle"]) options.price.add(Math.floor(wine["Price by Bottle"] / 100) * 100);
-                if (wine.Sugar) options.sugar.add(wine.Sugar);
-                if (wine.Taste) options.taste.add(wine.Taste);
-                if (wine.Style) wine.Style.split('|').forEach(s => options.style.add(s.trim()));
-                if (wine.Pairing) wine.Pairing.split('|').forEach(p => options.pairing.add(p.trim()));
+            const filterContainer = document.getElementById("filters");
+            filterContainer.innerHTML = "<tr>" + Object.keys(filters).map(filter => `<th>${filter}</th>`).join('') + "</tr>";
+            
+            let row = "<tr>";
+            Object.keys(filters).forEach(filter => {
+                wineData.forEach(wine => {
+                    if (wine[filter]) {
+                        wine[filter].split('|').forEach(value => filters[filter].add(value.trim()));
+                    }
+                });
+                let column = `<td>`;
+                filters[filter].forEach(value => {
+                    column += `<input type="checkbox" name="${filter}" value="${value}" onchange="filterWines()"> ${value}<br>`;
+                });
+                column += `</td>`;
+                row += column;
             });
-            filters.forEach(id => populateSelect(id, options[id]));
+            row += "</tr>";
+            filterContainer.innerHTML += row;
         }
-        function populateSelect(id, items) {
-            const select = document.getElementById(id);
-            select.innerHTML = "";
-            items.forEach(item => {
-                const option = document.createElement("option");
-                option.value = item;
-                option.textContent = item;
-                select.appendChild(option);
-            });
-        }
+        
         function filterWines() {
-            const filters = ["category", "country", "grape", "price", "sugar", "taste", "style", "pairing"];
-            const selected = {};
-            filters.forEach(id => selected[id] = getSelectedValues(id));
+            let selectedFilters = {};
+            Object.keys(filters).forEach(filter => {
+                selectedFilters[filter] = Array.from(document.querySelectorAll(`input[name='${filter}']:checked`))
+                    .map(cb => cb.value);
+            });
+            
             const filtered = wineData.filter(wine => {
-                return filters.every(id => selected[id].length === 0 ||
-                    selected[id].some(value => (wine[id] || "").split('|').map(v => v.trim()).includes(value)));
+                return Object.keys(selectedFilters).every(filter => 
+                    selectedFilters[filter].length === 0 || 
+                    selectedFilters[filter].some(value => wine[filter] && wine[filter].split('|').map(v => v.trim()).includes(value))
+                );
             });
             displayWines(filtered);
         }
-        function getSelectedValues(id) {
-            return Array.from(document.getElementById(id).selectedOptions).map(option => option.value);
-        }
+        
         function displayWines(wines) {
             const wineList = document.getElementById("wineList");
-            wineList.innerHTML = wines.map(wine => `<div class='wine-item'><strong>${wine["Wine Name"]}</strong> - ${wine.Category} (${wine.Country}) - ${wine.Taste} - ${wine.Style} - ${wine.Pairing} - ${wine["Price by Bottle"]} NOK</div>`).join('');
+            if (wines.length === 0) {
+                wineList.innerHTML = "<div class='no-results'>Too Picky!</div>";
+                return;
+            }
+            let table = `<table><thead><tr>
+                <th style='font-size: 14px; width: 40%;'>Wine Name</th>
+                <th style='font-size: 14px; width: 10%;'>Category</th>
+                <th style='font-size: 14px; width: 15%;'>Origin</th>
+                <th style='font-size: 14px; width: 15%;'>Pairing</th>
+                <th style='font-size: 14px; width: 20%;'>Sugar and Acid</th>
+            </tr></thead><tbody>`;
+            
+            table += wines.map(wine => {
+                let tasteInfo = `Sugar: ${wine["Sugar"] == "0" ? "<3 g/L" : wine["Sugar"] + " g/L"}, Acid: ${wine["Acid"] || 'N/A'} g/L, ${wine["Taste"] || 'N/A'}`;
+                return `<tr>
+                    <td><strong><a href="https://www.google.com/search?q=${encodeURIComponent(wine['Wine Name'] || '')}" target="_blank">${wine['Wine Name'] || ''}</a></strong>
+<br><span style='font-size: 12px;'>${(wine["Grape"] || 'N/A').split('|').join('<br>')}</span></td>
+                    <td>${wine["Category"] || ''}<br><span style='font-size: 12px;'>${wine["Taste"] || ''}</span></td>
+                    <td>${wine["Country"] || ''}<br><span style='font-size: 12px;'>${wine["Area"] || ''}</span></td>
+                    <td style='font-size: 14px;'>${(wine["Pairing"] || '').split('|').join('<br>')}</td>
+                    <td style='font-size: 14px;'>Sugar: ${wine["Sugar"] == "0" ? "<3 g/L" : wine["Sugar"] + " g/L"}<br>Acid: ${wine["Acid"] || 'N/A'} g/L</td>
+                </tr>`;
+            }).join('');
+            
+            table += "</tbody></table>";
+            wineList.innerHTML = table;
         }
+        
         loadWineData();
     </script>
 </body>
