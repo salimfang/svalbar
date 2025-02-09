@@ -95,25 +95,22 @@
             });
         }
         function populateFilters() {
-            const categories = new Set(), countries = new Set(), grapes = new Set(), prices = new Set(), sugars = new Set(), tastes = new Set(), styles = new Set(), pairings = new Set();
+            const filters = ["category", "country", "grape", "price", "sugar", "taste", "style", "pairing"];
+            const options = {
+                category: new Set(), country: new Set(), grape: new Set(), price: new Set(),
+                sugar: new Set(), taste: new Set(), style: new Set(), pairing: new Set()
+            };
             wineData.forEach(wine => {
-                if (wine.Category) categories.add(wine.Category);
-                if (wine.Country) countries.add(wine.Country);
-                if (wine.Grape) wine.Grape.split('|').forEach(g => grapes.add(g.trim()));
-                if (wine["Price by Bottle"]) prices.add(Math.floor(wine["Price by Bottle"] / 100) * 100);
-                if (wine.Sugar) sugars.add(wine.Sugar);
-                if (wine.Taste) tastes.add(wine.Taste);
-                if (wine.Style) wine.Style.split('|').forEach(s => styles.add(s.trim()));
-                if (wine.Pairing) wine.Pairing.split('|').forEach(p => pairings.add(p.trim()));
+                if (wine.Category) options.category.add(wine.Category);
+                if (wine.Country) options.country.add(wine.Country);
+                if (wine.Grape) wine.Grape.split('|').forEach(g => options.grape.add(g.trim()));
+                if (wine["Price by Bottle"]) options.price.add(Math.floor(wine["Price by Bottle"] / 100) * 100);
+                if (wine.Sugar) options.sugar.add(wine.Sugar);
+                if (wine.Taste) options.taste.add(wine.Taste);
+                if (wine.Style) wine.Style.split('|').forEach(s => options.style.add(s.trim()));
+                if (wine.Pairing) wine.Pairing.split('|').forEach(p => options.pairing.add(p.trim()));
             });
-            populateSelect("category", categories);
-            populateSelect("country", countries);
-            populateSelect("grape", grapes);
-            populateSelect("price", prices);
-            populateSelect("sugar", sugars);
-            populateSelect("taste", tastes);
-            populateSelect("style", styles);
-            populateSelect("pairing", pairings);
+            filters.forEach(id => populateSelect(id, options[id]));
         }
         function populateSelect(id, items) {
             const select = document.getElementById(id);
@@ -126,16 +123,12 @@
             });
         }
         function filterWines() {
-            const selectedCategories = getSelectedValues("category"), selectedCountries = getSelectedValues("country"), selectedGrapes = getSelectedValues("grape"), selectedPrices = getSelectedValues("price").map(Number), selectedSugars = getSelectedValues("sugar"), selectedTastes = getSelectedValues("taste"), selectedStyles = getSelectedValues("style"), selectedPairings = getSelectedValues("pairing");
+            const filters = ["category", "country", "grape", "price", "sugar", "taste", "style", "pairing"];
+            const selected = {};
+            filters.forEach(id => selected[id] = getSelectedValues(id));
             const filtered = wineData.filter(wine => {
-                return (selectedCategories.length === 0 || selectedCategories.includes(wine.Category)) &&
-                       (selectedCountries.length === 0 || selectedCountries.includes(wine.Country)) &&
-                       (selectedGrapes.length === 0 || selectedGrapes.some(g => wine.Grape.split('|').includes(g))) &&
-                       (selectedPrices.length === 0 || selectedPrices.includes(Math.floor(wine["Price by Bottle"] / 100) * 100)) &&
-                       (selectedSugars.length === 0 || selectedSugars.includes(wine.Sugar)) &&
-                       (selectedTastes.length === 0 || selectedTastes.includes(wine.Taste)) &&
-                       (selectedStyles.length === 0 || selectedStyles.some(s => wine.Style.split('|').includes(s))) &&
-                       (selectedPairings.length === 0 || selectedPairings.some(p => wine.Pairing.split('|').includes(p)));
+                return filters.every(id => selected[id].length === 0 ||
+                    selected[id].some(value => (wine[id] || "").split('|').map(v => v.trim()).includes(value)));
             });
             displayWines(filtered);
         }
