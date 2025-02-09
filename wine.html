@@ -10,34 +10,51 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            margin: 40px auto;
-            max-width: 800px;
-            text-align: center;
-            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
             color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         h1 {
             font-weight: 600;
-            color: #2c3e50;
+            color: #b22222;
+            margin-bottom: 20px;
+        }
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
         }
         select, button {
-            margin: 10px;
             padding: 10px;
             font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            background: #fff;
         }
         select {
             width: 200px;
         }
         button {
-            background-color: #2c3e50;
+            background-color: #b22222;
             color: white;
             cursor: pointer;
             border: none;
+            transition: 0.3s;
         }
         button:hover {
-            background-color: #1a252f;
+            background-color: #8b0000;
         }
         .wine-list {
             margin-top: 20px;
@@ -45,46 +62,40 @@
             background: white;
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .wine-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
         }
     </style>
 </head>
 <body>
-    <h1>Wine Selector</h1>
-    
-    <h3>Filters</h3>
-    <label>Category:</label> <select multiple id="category"></select>
-    <label>Country:</label> <select multiple id="country"></select>
-    <label>Grape:</label> <select multiple id="grape"></select>
-    <label>Price Range:</label> <select multiple id="price"></select>
-    <label>Sugar Content:</label> <select multiple id="sugar"></select>
-    <label>Taste:</label> <select multiple id="taste"></select>
-    <label>Style:</label> <select multiple id="style"></select>
-    <label>Pairing:</label> <select multiple id="pairing"></select>
-    
-    <button onclick="filterWines()">Apply Filters</button>
-    
-    <div class="wine-list" id="wineList"></div>
-    
+    <div class="container">
+        <h1>Wine Selector</h1>
+        <div class="filters">
+            <select multiple id="category"></select>
+            <select multiple id="country"></select>
+            <select multiple id="grape"></select>
+            <select multiple id="price"></select>
+            <select multiple id="sugar"></select>
+            <select multiple id="taste"></select>
+            <select multiple id="style"></select>
+            <select multiple id="pairing"></select>
+        </div>
+        <button onclick="filterWines()">Apply Filters</button>
+        <div class="wine-list" id="wineList"></div>
+    </div>
     <script>
         let wineData = [];
-        
         function loadWineData() {
             $.get("winedata.csv", function(data) {
                 wineData = Papa.parse(data, { header: true }).data;
                 populateFilters();
             });
         }
-        
         function populateFilters() {
-            const categories = new Set();
-            const countries = new Set();
-            const grapes = new Set();
-            const prices = new Set();
-            const sugars = new Set();
-            const tastes = new Set();
-            const styles = new Set();
-            const pairings = new Set();
-            
+            const categories = new Set(), countries = new Set(), grapes = new Set(), prices = new Set(), sugars = new Set(), tastes = new Set(), styles = new Set(), pairings = new Set();
             wineData.forEach(wine => {
                 if (wine.Category) categories.add(wine.Category);
                 if (wine.Country) countries.add(wine.Country);
@@ -95,7 +106,6 @@
                 if (wine.Style) wine.Style.split('|').forEach(s => styles.add(s.trim()));
                 if (wine.Pairing) wine.Pairing.split('|').forEach(p => pairings.add(p.trim()));
             });
-            
             populateSelect("category", categories);
             populateSelect("country", countries);
             populateSelect("grape", grapes);
@@ -105,7 +115,6 @@
             populateSelect("style", styles);
             populateSelect("pairing", pairings);
         }
-        
         function populateSelect(id, items) {
             const select = document.getElementById(id);
             select.innerHTML = "";
@@ -116,40 +125,27 @@
                 select.appendChild(option);
             });
         }
-        
         function filterWines() {
-            const selectedCategories = getSelectedValues("category");
-            const selectedCountries = getSelectedValues("country");
-            const selectedGrapes = getSelectedValues("grape");
-            const selectedPrices = getSelectedValues("price").map(Number);
-            const selectedSugars = getSelectedValues("sugar");
-            const selectedTastes = getSelectedValues("taste");
-            const selectedStyles = getSelectedValues("style");
-            const selectedPairings = getSelectedValues("pairing");
-            
+            const selectedCategories = getSelectedValues("category"), selectedCountries = getSelectedValues("country"), selectedGrapes = getSelectedValues("grape"), selectedPrices = getSelectedValues("price").map(Number), selectedSugars = getSelectedValues("sugar"), selectedTastes = getSelectedValues("taste"), selectedStyles = getSelectedValues("style"), selectedPairings = getSelectedValues("pairing");
             const filtered = wineData.filter(wine => {
                 return (selectedCategories.length === 0 || selectedCategories.includes(wine.Category)) &&
                        (selectedCountries.length === 0 || selectedCountries.includes(wine.Country)) &&
-                       (selectedGrapes.length === 0 || selectedGrapes.some(g => wine.Grape.includes(g))) &&
+                       (selectedGrapes.length === 0 || selectedGrapes.some(g => wine.Grape.split('|').includes(g))) &&
                        (selectedPrices.length === 0 || selectedPrices.includes(Math.floor(wine["Price by Bottle"] / 100) * 100)) &&
                        (selectedSugars.length === 0 || selectedSugars.includes(wine.Sugar)) &&
                        (selectedTastes.length === 0 || selectedTastes.includes(wine.Taste)) &&
-                       (selectedStyles.length === 0 || selectedStyles.some(s => wine.Style.includes(s))) &&
-                       (selectedPairings.length === 0 || selectedPairings.some(p => wine.Pairing.includes(p)));
+                       (selectedStyles.length === 0 || selectedStyles.some(s => wine.Style.split('|').includes(s))) &&
+                       (selectedPairings.length === 0 || selectedPairings.some(p => wine.Pairing.split('|').includes(p)));
             });
-            
             displayWines(filtered);
         }
-        
         function getSelectedValues(id) {
             return Array.from(document.getElementById(id).selectedOptions).map(option => option.value);
         }
-        
         function displayWines(wines) {
             const wineList = document.getElementById("wineList");
-            wineList.innerHTML = "<h3>Filtered Wines</h3>" + wines.map(wine => `<p><strong>${wine["Wine Name"]}</strong> - ${wine.Category} (${wine.Country}) - ${wine.Taste} - ${wine.Style} - ${wine.Pairing} - ${wine["Price by Bottle"]} NOK</p>`).join('');
+            wineList.innerHTML = wines.map(wine => `<div class='wine-item'><strong>${wine["Wine Name"]}</strong> - ${wine.Category} (${wine.Country}) - ${wine.Taste} - ${wine.Style} - ${wine.Pairing} - ${wine["Price by Bottle"]} NOK</div>`).join('');
         }
-        
         loadWineData();
     </script>
 </body>
