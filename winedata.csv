@@ -1,0 +1,38 @@
+﻿Category,Wine Name,Price by Bottle,Price by Glass,Acid,Sugar,Country,Area,Grape,Style,Pairing,Taste
+White,Domaine Alain Geoffroy Chablis ,590,125,5.7,0,France,Burgundy,Chardonnay 100%,Light|Fresh,Shellfish|Fish,Dry
+White,Birichino Jurassic Park Vineyard Old Vines Chenin Blanc,1060,N/A,5.9,0,USA,California,Chenin Blanc 100%,Spiced|Fruity,Shellfish|Fish|Light Meat,Dry
+White,Feudi di San Gregorio Greco Di Tufo ,600,N/A,6.5,0,Italy,Campania,Greco 100%,Juicy|Fresh,Fish|Light Meat|Cheese,Bone Dry
+Rose,Georg Breuer Spätburgunder Rosé ,790,N/A,6.1,4.8,Germany,Rheingau,Spätburgunder 100%,Fruity|Fresh,Fish|Light Meat|Vegetable,Off Dry
+White,Grans-Fassian Flussterrassen Riesling ,600,N/A,8.4,12,Germany,Mosel,Riesling 100%,Fresh|Fruity,Shellfish|Fish,Off Dry
+White,Kloster Eberbach Crescentia Rauenthaler Baiken Riesling Trocken ,565,N/A,7.7,6.7,Germany,Rheingau,Riesling 100%,Light|Fresh,Shellfish|Fish,Off Dry
+White,Louis Jadot Meursault 1er Cru “Charmes” ,1900,N/A,?,0,France,Burgundy,Chardonnay 100%,Spiced|Fruity,Shellfish|Fish|Cheese|Cured Meat,Off Dry
+White,Luis Pato Vinhas Velhas Blanco,620,N/A,8,0,Portugal,Beira Atlântico,Bical 50%|Cerceal 25%|Sercialinho (Cercealinho) 25%,Light|Fresh,Shellfish|Fish,Bone Dry
+White,M. Chapoutier La Combe Pilate,620,N/A,?,?,France,Rhône Valley,Viognier 100%,Spiced|Fruity,Shellfish|Tapas,Off Dry
+White,Maison Lavantureux Chablis Vieilles Vignes ,990,N/A,6.1,0,France,Burgundy,Chardonnay 100%,Light|Fresh,Shellfish|Fish|Light Meat,Bone Dry
+White,Résonance Wines Découverte Vineyard Chardonnay ,1090,N/A,5.4,0,USA,Oregon,Chardonnay 100%,Juicy|Fresh,Shellfish|Fish|Light Meat,Dry
+White,Seghesio Chardonnay,840,N/A,6,0,USA,California,Chardonnay 100%,Spiced|Fruity,Shellfish|Fish|Cheese,Dry
+White,Weingut Würtzberg Saar Riesling ,390,85,6.9,5.9,Germany,Mosel,Riesling 100%,Light|Fresh,Shellfish|Fish,Off Dry
+White,Soalheiro Vinho Verde Alvarinho,610,N/A,6.6,4.3,Portugal,Minho,Alvarinho 100%,Juicy|Fresh,Shellfish|Fish,Off Dry
+Rose,Vivanco Rosado,640,N/A,?,?,Spain,Rioja,Tempranillo 75%|Garnacha Tinta 20%|Garnacha Blanca 5%,Fruity|Light,Fish|Tapas,Off Dry
+Sparkling,Albino Armani Prosecco Extra Dry ,565,N/A,5.9,15,Italy,Prosecco,Glera 100%,Fruity|Fresh,Shellfish|Fish,Off Dry
+Sparkling,Charles Heidsieck Brut Reserve Champagne,1100,N/A,6.1,7,France,Champagne,Pinot Meunier 20%|Pinot Noir 40%|Chardonnay 40%,Creamy|Juicy,Shellfish|Fish|Light Meat,Off Dry
+Sparkling,Freixenet Cava Cordon Negro Organic Brut ,600,N/A,5.7,9,Spain,Cava,Parellada 40%|Xarel·lo 25%|Macabeo 35%,Creamy|Fruity,Shellfish|Fish,Off Dry
+Sparkling,M. Chapoutier La Clairette De Die,710,N/A,5.6,35,France,Rhône Valley,Muscat Blanc 90%|Clairette 10%,Fresh|Sweet,Shellfish|Dessert,Sweet
+Sparkling,Mas Codina Cava Brut Nature Reserva,565,N/A,5.6,8,Spain,Cava,Xarel·lo 34%|Macabeo 48%|Pinot Noir 8%|Chardonnay 10%,Fresh|Fruity,Shellfish|Light Meat,Off Dry
+Sparkling,Tommasi Filodora Prosecco,590,125,5.5,12.7,Italy,Prosecco,Glera 100%,Fresh|Fruity,Shellfish|Fish,Off Dry
+Dessert,Bringebærlandet Raspberry Ice Wine,690,120,25,210,Norway,Akershus,Raspberry 100%,Fresh|Fruity,Cheese|Dessert,Very Sweet
+Port,N.V. Churchill's 20 Years Old Tawny Port,790,108,4.8,114,Portugal,Douro e Porto,Tinta Roriz 20%|Tinta Barroca 20%|Tinto Cão 20%|Touriga Franca 20%|Touriga Nacional 20%,Aromatic|Rich,Cheese|Dessert,Very Sweet
+Dessert,Oremus Tokaji Late Harvest,630,105,7,106.6,Hungary,Tokaji,"Muscat (Moscatel, Moscato) 15%|Zéta (Oremus) 15%|Hárslevelu 30%|Furmint (Šipon) 40%",Fruity|Fresh,Cheese|Dessert,Very Sweet
+Red,Bela Ribuero Del Duero ,655,N/A,5.3,0,Spain,Castilla y León,Tempranillo (Tinto del Pais) 100%,Spiced|Sweet,Beef|Lamb|Game,Dry
+Red,Domaine Borgeot Santenay Vieilles Vignes ,920,N/A,3.9,0,France,Burgundy,Pinot Noir 100%,Fresh|Fruity,Light Meat|Beef|Lamb,Off Dry
+Red,Felsina S.P.A. Pagliarese Chianti Classico ,675,N/A,5.1,0,Italy,Toscana,Sangiovese 90%|Mammolo 5%|Canaiolo 5%,Fresh|Fruity,Beef|Lamb|Pork,Dry
+Red,Imperial Gran Reserva 2015 ,1350,N/A,5.6,0,Spain,Rioja,Tempranillo (Tinto del Pais) 90%|Graciano (Bovale) 10%,Complex|Developed,Beef|Lamb|Game,Dry
+Red,Kloster Eberbach Pinot Noir Trocken ,620,N/A,4.5,0,Germany,Rheingau,Pinot Noir 100%,Fresh|Fruity,Lamb|Game|Pork,Dry
+Red,Cascina Castlet Litina Barbera d'Asti ,780,N/A,5.6,0,Italy,Piemonte,Barbera 100%,Fresh|Fruity,Lamb|Game|Pork,Dry
+Red,M. Chapoutier Les Gadilles Rasteau,660,N/A,5.4,0,France,Rhône Valley,Grenache 100%,Full|Juicy,Beef|Lamb|Cheese,Dry
+Red,Résonance Vineyard Pinot Noir ,1275,N/A,5.3,0,USA,Oregon,Pinot Noir 100%,Complex|Developed,Beef|Lamb|Game,Dry
+Red,Umani Ronchi San Lorenzo Rosso Conero ,715,N/A,5.3,0,Italy,Marche,Montepulciano 100%,Full|Juicy,Light Meat|Lamb,Dry
+Red,Seghesio Sonoma Zinfandel ,830,N/A,5.8,0,USA,California,"Zinfandel 90%|Petite Sirah (Durif, P. Syrah) 10%",Full|Juicy,Beef|Lamb|Game,Dry
+Red,Gran Feudo Crianza ,350,N/A,5.1,0,Spain,Navarra,Cabernet Sauvignon 15%|Tempranillo (Tinto del Pais) 70%|Garnacha 15%,Spiced|Sweet,Beef|Lamb|Game,Dry
+Red,Berton Vineyards The Black Shiraz ,485,99,6.8,0,Australia,South East,Shiraz 100%,Full|Juicy,Beef|Lamb|Game,Bone Dry
+Red,Tommasi Valpolicella ,625,135,5.9,5.9,Italy,Veneto,Corvina 60%|Molinara 10%|Rondinella 30%,Fresh|Fruity,Light Meat|Cheese|Pork,Off Dry
